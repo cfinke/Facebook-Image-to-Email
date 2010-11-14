@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<overlay xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:html="http://www.w3.org/1999/xhtml">
+	<script type="application/x-javascript" src="chrome://random234234/content/image_to_email.js"></script>
+	
+	<script type="application/x-javascript" src="chrome://random234234/content/screengrab/Dimensions.js"></script>
+	<script type="application/x-javascript" src="chrome://random234234/content/screengrab/NsUtils.js"></script>
+	<script type="application/x-javascript" src="chrome://random234234/content/screengrab/NsGrab.js"></script>
+	<script type="application/x-javascript" src="chrome://random234234/content/screengrab/Screengrab.js"></script>
+	
+	<script type="application/x-javascript">
+		<![CDATA[
+		
+		var fb_ite_timer = null;
+		
+		window.addEventListener("load", setup_contentload, false);
+		
+		function setup_contentload() {
+			var appcontent = document.getElementById("appcontent");
+			appcontent.addEventListener("load", function (event) { fbi2e_load(event); }, true);
+			appcontent.addEventListener("select", function (event) { fbi2e_select(event); }, false);
+		}
+		
+		function fbi2e_select(event) {
+			window.setTimeout('fbi2e_load();', 1000);
+		}
+		
+		function fbi2e_load(event) {
+			if (event) {
+				try {
+					var page = event.originalTarget;
+					var host = page.location.host;
+				} catch (e) { return; }
+			
+				if (page.location.href != content.document.location.href) {
+					// Loading in the background
+					return;
+				}
+				
+				if (host.match(/facebook/)){
+					if (event.originalTarget.defaultView.frameElement) {
+						if (event.originalTarget.defaultView.frameElement.ownerDocument != event.originalTarget) {
+							return;
+						}
+					}
+					
+    				fb_ite_timer = setInterval(facebook_image_to_email, 10 * 1000, page);
+                    facebook_image_to_email(page);
+				}
+				
+			}
+			else {
+				try {
+					var page = window.content.document;
+					var host = page.location.host;
+				} catch (e) { return; }
+				
+				if (host.match(/facebook/)){
+				    fb_ite_timer = setInterval(facebook_image_to_email, 10 * 1000, page);
+                    facebook_image_to_email(page);
+				}				
+			}
+		}
+		
+		]]>
+	</script>
+	<statusbar id="status-bar">
+		<statusbarpanel id="facebook-image-to-email-panel">
+		    <vbox flex="1">
+	      		<scrollbox width="1" height="1">
+        			<html:canvas id="fbi2e_buffer_canvas" style="display: none"/>
+	      		</scrollbox>
+	    	</vbox>
+		</statusbarpanel>
+	</statusbar>	
+</overlay>
