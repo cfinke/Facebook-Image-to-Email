@@ -1,3 +1,5 @@
+{defunct}
+
 This extension is no longer relevant, as Facebook no longer encodes your friends' email addresses in images, but it may still be of academic interest. Here is how it used to work:
 
 On any Facebook page containing an e-mail address image, the extension converts the image to text using the following workflow:
